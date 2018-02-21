@@ -3,37 +3,37 @@ DEG_TO_RAD = pi / 180
 
 # PERCEPTORS
 # For L2R, I would assume that only the joint sensors (and effectors) are relevant.
-                      HINGE_JOINT_PERCEPTOR = "HJ"
-                  UNIVERSAL_JOINT_PERCEPTOR = "UJ"
-                            TOUCH_PERCEPTOR = "TCH"
-                 FORCE_RESISTANCE_PERCEPTOR = "FRP"
-                    ACCELEROMETER_PERCEPTOR = "ACC"
-                        GYRO_RATE_PERCEPTOR = "GYR"
-                       GAME_STATE_PERCEPTOR = "GS"
-                              GPS_PERCEPTOR = "GPS"
-                              BAT_PERCEPTOR = "BAT"
+HINGE_JOINT_PERCEPTOR = "HJ"
+UNIVERSAL_JOINT_PERCEPTOR = "UJ"
+TOUCH_PERCEPTOR = "TCH"
+FORCE_RESISTANCE_PERCEPTOR = "FRP"
+ACCELEROMETER_PERCEPTOR = "ACC"
+GYRO_RATE_PERCEPTOR = "GYR"
+GAME_STATE_PERCEPTOR = "GS"
+GPS_PERCEPTOR = "GPS"
+BAT_PERCEPTOR = "BAT"
 
-                           VISION_PERCEPTOR = "See"
-                 VISION_PERCEPTOR_TRUE_BALL = "ballpos"
-                  VISION_PERCEPTOR_TRUE_POS = "mypos"
-                      VISION_PERCEPTOR_BALL = "B"
-                      VISION_PERCEPTOR_LINE = "L"
-    VISION_PERCEPTOR_TOP_RIGHT_FIELD_CORNER = "F1R"
- VISION_PERCEPTOR_BOTTOM_RIGHT_FIELD_CORNER = "F2R"
-     VISION_PERCEPTOR_TOP_LEFT_FIELD_CORNER = "F1L"
-  VISION_PERCEPTOR_BOTTOM_LEFT_FIELD_CORNER = "F2L"
-       VISION_PERCEPTOR_TOP_RIGHT_GOAL_POST = "G1R"
-    VISION_PERCEPTOR_BOTTOM_RIGHT_GOAL_POST = "G2R"
-        VISION_PERCEPTOR_TOP_LEFT_GOAL_POST = "G1L"
-     VISION_PERCEPTOR_BOTTOM_LEFT_GOAL_POST = "G2L"
-                     VISION_PERCEPTOR_AGENT = "P"
-                      VISION_PERCEPTOR_HEAD = "head"
-           VISION_PERCEPTOR_RIGHT_LOWER_ARM = "rlowerarm"
-            VISION_PERCEPTOR_LEFT_LOWER_ARM = "llowerarm"
-                VISION_PERCEPTOR_RIGHT_FOOT = "rfoot"
-                 VISION_PERCEPTOR_LEFT_FOOT = "lfoot"
-                              BOTTOM_CAMERA = 'BottomCamera'
-                                 TOP_CAMERA = 'TopCamera'
+VISION_PERCEPTOR = "See"
+VISION_PERCEPTOR_TRUE_BALL = "ballpos"
+VISION_PERCEPTOR_TRUE_POS = "mypos"
+VISION_PERCEPTOR_BALL = "B"
+VISION_PERCEPTOR_LINE = "L"
+VISION_PERCEPTOR_TOP_RIGHT_FIELD_CORNER = "F1R"
+VISION_PERCEPTOR_BOTTOM_RIGHT_FIELD_CORNER = "F2R"
+VISION_PERCEPTOR_TOP_LEFT_FIELD_CORNER = "F1L"
+VISION_PERCEPTOR_BOTTOM_LEFT_FIELD_CORNER = "F2L"
+VISION_PERCEPTOR_TOP_RIGHT_GOAL_POST = "G1R"
+VISION_PERCEPTOR_BOTTOM_RIGHT_GOAL_POST = "G2R"
+VISION_PERCEPTOR_TOP_LEFT_GOAL_POST = "G1L"
+VISION_PERCEPTOR_BOTTOM_LEFT_GOAL_POST = "G2L"
+VISION_PERCEPTOR_AGENT = "P"
+VISION_PERCEPTOR_HEAD = "head"
+VISION_PERCEPTOR_RIGHT_LOWER_ARM = "rlowerarm"
+VISION_PERCEPTOR_LEFT_LOWER_ARM = "llowerarm"
+VISION_PERCEPTOR_RIGHT_FOOT = "rfoot"
+VISION_PERCEPTOR_LEFT_FOOT = "lfoot"
+BOTTOM_CAMERA = 'BottomCamera'
+TOP_CAMERA = 'TopCamera'
 
 
 # Note that direction of mapping is reversed in the subseding object!
@@ -143,7 +143,7 @@ class Perception:
                     self.joint_temp[name] = float(jointv['tp'])
 
             # Vision / TopCamera
-            elif name == VISION_PERCEPTOR or
+            elif name == VISION_PERCEPTOR or \
                  name == TOP_CAMERA:
                 self.see[0] = self._parse_vision(s[1:])
 

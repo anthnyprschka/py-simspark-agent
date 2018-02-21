@@ -21,7 +21,8 @@ class BaseAgent(object):
         self.simspark_port = simspark_port
 
         # Connect to environment
-        self.connect()
+        self.connect(self.simspark_ip,
+                     self.simspark_port)
 
         while player_id == 0:
             self.sense()
@@ -39,12 +40,11 @@ class BaseAgent(object):
         """
         self.socket = socket.socket(socket.AF_INET,
             socket.SOCK_STREAM)
-        self.socket.connect((self.simspark_ip,
-                             self.simspark_port))
+        self.socket.connect((simspark_ip, simspark_port))
         self.perception = Perception()
         self.act('(scene rsg/agent/naov4/nao.rsg)')
         self.sense()  # only need to get msg from simspark
-        init_cmd = ('(init (unum ' + str(player_id)\
+        init_cmd = ('(init (unum ' + str(self.player_id) \
                    + ')(teamname ' + teamname + '))')
         self.act(init_cmd)
         self.thread = None
@@ -94,7 +94,6 @@ class BaseAgent(object):
     def act(self, commands):
         # commands = action.create_joint_cmds()
         # commands = '(say hi)'
-        self.counter += 1
         if self.sync_mode:
             commands += '(syn)'
         self.socket.sendall(struct.pack("!I",

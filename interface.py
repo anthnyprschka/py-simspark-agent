@@ -1,44 +1,46 @@
+import numpy as np
 from math import pi, atan2, asin, cos, sin
 DEG_TO_RAD = pi / 180
 
 # PERCEPTORS
-# For L2R, I would assume that only the joint sensors (and effectors) are relevant.
-HINGE_JOINT_PERCEPTOR = "HJ"
-UNIVERSAL_JOINT_PERCEPTOR = "UJ"
-TOUCH_PERCEPTOR = "TCH"
-FORCE_RESISTANCE_PERCEPTOR = "FRP"
-ACCELEROMETER_PERCEPTOR = "ACC"
-GYRO_RATE_PERCEPTOR = "GYR"
-GAME_STATE_PERCEPTOR = "GS"
-GPS_PERCEPTOR = "GPS"
-BAT_PERCEPTOR = "BAT"
-
-VISION_PERCEPTOR = "See"
-VISION_PERCEPTOR_TRUE_BALL = "ballpos"
-VISION_PERCEPTOR_TRUE_POS = "mypos"
-VISION_PERCEPTOR_BALL = "B"
-VISION_PERCEPTOR_LINE = "L"
-VISION_PERCEPTOR_TOP_RIGHT_FIELD_CORNER = "F1R"
-VISION_PERCEPTOR_BOTTOM_RIGHT_FIELD_CORNER = "F2R"
-VISION_PERCEPTOR_TOP_LEFT_FIELD_CORNER = "F1L"
-VISION_PERCEPTOR_BOTTOM_LEFT_FIELD_CORNER = "F2L"
-VISION_PERCEPTOR_TOP_RIGHT_GOAL_POST = "G1R"
-VISION_PERCEPTOR_BOTTOM_RIGHT_GOAL_POST = "G2R"
-VISION_PERCEPTOR_TOP_LEFT_GOAL_POST = "G1L"
-VISION_PERCEPTOR_BOTTOM_LEFT_GOAL_POST = "G2L"
-VISION_PERCEPTOR_AGENT = "P"
-VISION_PERCEPTOR_HEAD = "head"
-VISION_PERCEPTOR_RIGHT_LOWER_ARM = "rlowerarm"
-VISION_PERCEPTOR_LEFT_LOWER_ARM = "llowerarm"
-VISION_PERCEPTOR_RIGHT_FOOT = "rfoot"
-VISION_PERCEPTOR_LEFT_FOOT = "lfoot"
-BOTTOM_CAMERA = 'BottomCamera'
-TOP_CAMERA = 'TopCamera'
+# For L2R, I think only the joint sensors (& effectors) are relevant.
+HINGE_JOINT_PERCEPTOR                       = "HJ"               #  0
+UNIVERSAL_JOINT_PERCEPTOR                   = "UJ"               #  1
+TOUCH_PERCEPTOR                             = "TCH"              #  2
+FORCE_RESISTANCE_PERCEPTOR                  = "FRP"              #  3
+ACCELEROMETER_PERCEPTOR                     = "ACC"              #  4
+GYRO_RATE_PERCEPTOR                         = "GYR"              #  5
+GAME_STATE_PERCEPTOR                        = "GS"               #  6
+GPS_PERCEPTOR                               = "GPS"              #  7
+BAT_PERCEPTOR                               = "BAT"              #  8
+VISION_PERCEPTOR                            = "See"              #  9
+VISION_PERCEPTOR_TRUE_BALL                  = "ballpos"          # 10
+VISION_PERCEPTOR_TRUE_POS                   = "mypos"            # 11
+VISION_PERCEPTOR_BALL                       = "B"                # 12
+VISION_PERCEPTOR_LINE                       = "L"                # 13
+VISION_PERCEPTOR_TOP_RIGHT_FIELD_CORNER     = "F1R"              # 14
+VISION_PERCEPTOR_BOTTOM_RIGHT_FIELD_CORNER  = "F2R"              # 15
+VISION_PERCEPTOR_TOP_LEFT_FIELD_CORNER      = "F1L"              # 16
+VISION_PERCEPTOR_BOTTOM_LEFT_FIELD_CORNER   = "F2L"              # 17
+VISION_PERCEPTOR_TOP_RIGHT_GOAL_POST        = "G1R"              # 18
+VISION_PERCEPTOR_BOTTOM_RIGHT_GOAL_POST     = "G2R"              # 19
+VISION_PERCEPTOR_TOP_LEFT_GOAL_POST         = "G1L"              # 20
+VISION_PERCEPTOR_BOTTOM_LEFT_GOAL_POST      = "G2L"              # 21
+VISION_PERCEPTOR_AGENT                      = "P"                # 22
+VISION_PERCEPTOR_HEAD                       = "head"             # 23
+VISION_PERCEPTOR_RIGHT_LOWER_ARM            = "rlowerarm"        # 24
+VISION_PERCEPTOR_LEFT_LOWER_ARM             = "llowerarm"        # 25
+VISION_PERCEPTOR_RIGHT_FOOT                 = "rfoot"            # 26
+VISION_PERCEPTOR_LEFT_FOOT                  = "lfoot"            # 27
+BOTTOM_CAMERA                               = 'BottomCamera'     # 28
+TOP_CAMERA                                  = 'TopCamera'        # 29
+REWARD_PERCEPTOR                            = 'R'                # 30
+ISFALLEN_PERCEPTOR                          = 'isfallen'         # 31
 
 
 # Note that direction of mapping is reversed in the subseding object!
-JOINT_SENSOR_NAMES = { "hj1": 'HeadYaw',                         #  0
-                       "hj2": 'HeadPitch',                       #  1
+JOINT_SENSOR_NAMES = { "hj1":  'HeadYaw',                        #  0
+                       "hj2":  'HeadPitch',                      #  1
                        "laj1": 'LShoulderPitch',                 #  2
                        "laj2": 'LShoulderRoll',                  #  3
                        "laj3": 'LElbowYaw',                      #  4
@@ -62,40 +64,40 @@ JOINT_SENSOR_NAMES = { "hj1": 'HeadYaw',                         #  0
 
 # EFFECTORS
 # Note that direction of mapping is reversed in the preceding object!
-JOINT_CMD_NAMES = { 'HeadYaw': "he1",                            #  0
-                    'HeadPitch': "he2",                          #  1
+JOINT_CMD_NAMES = { 'HeadYaw':        "he1",                     #  0
+                    'HeadPitch':      "he2",                     #  1
                     'LShoulderPitch': "lae1",                    #  2
-                    'LShoulderRoll': "lae2",                     #  3
-                    'LElbowYaw': "lae3",                         #  4
-                    'LElbowRoll': "lae4",                        #  5
-                    'LHipYawPitch': "lle1",                      #  6
-                    'LHipRoll': "lle2",                          #  7
-                    'LHipPitch': "lle3",                         #  8
-                    'LKneePitch': "lle4",                        #  9
-                    'LAnklePitch': "lle5",                       # 10
-                    'LAnkleRoll': "lle6",                        # 11
+                    'LShoulderRoll':  "lae2",                    #  3
+                    'LElbowYaw':      "lae3",                    #  4
+                    'LElbowRoll':     "lae4",                    #  5
+                    'LHipYawPitch':   "lle1",                    #  6
+                    'LHipRoll':       "lle2",                    #  7
+                    'LHipPitch':      "lle3",                    #  8
+                    'LKneePitch':     "lle4",                    #  9
+                    'LAnklePitch':    "lle5",                    # 10
+                    'LAnkleRoll':     "lle6",                    # 11
                     'RShoulderPitch': "rae1",                    # 12
-                    'RShoulderRoll': "rae2",                     # 13
-                    'RElbowYaw': "rae3",                         # 14
-                    'RElbowRoll': "rae4",                        # 15
-                    'RHipYawPitch': "rle1",                      # 16
-                    'RHipRoll': "rle2",                          # 17
-                    'RHipPitch': "rle3",                         # 18
-                    'RKneePitch': "rle4",                        # 19
-                    'RAnklePitch': "rle5",                       # 20
-                    'RAnkleRoll': "rle6" }                       # 21
+                    'RShoulderRoll':  "rae2",                    # 13
+                    'RElbowYaw':      "rae3",                    # 14
+                    'RElbowRoll':     "rae4",                    # 15
+                    'RHipYawPitch':   "rle1",                    # 16
+                    'RHipRoll':       "rle2",                    # 17
+                    'RHipPitch':      "rle3",                    # 18
+                    'RKneePitch':     "rle4",                    # 19
+                    'RAnklePitch':    "rle5",                    # 20
+                    'RAnkleRoll':     "rle6" }                   # 21
 
 
 # Some joints are inverted in simspark compared with real NAO
 INV_JOINTS = [ 'HeadPitch',
-                    'LShoulderPitch',
-                    'RShoulderPitch',
-                    'LHipPitch',
-                    'RHipPitch',
-                    'LKneePitch',
-                    'RKneePitch',
-                    'LAnklePitch',
-                    'RAnklePitch' ]
+               'LShoulderPitch',
+               'RShoulderPitch',
+               'LHipPitch',
+               'RHipPitch',
+               'LKneePitch',
+               'RKneePitch',
+               'LAnklePitch',
+               'RAnklePitch' ]
 
 
 class Perception:
@@ -132,13 +134,41 @@ class Perception:
             # HingeJoints
             elif name == HINGE_JOINT_PERCEPTOR:
                 jointv = {}
+
+                # In this case, s[0] is the meta-identifier
+                # "HJ". In every other element of s, it seems
+                # there is another list of length 2 that holds
+                #
                 for i in s[1:]:
                     jointv[i[0]] = i[1]
+
+                # What is this thing doing? Where is the 'n'
+                # coming from? 'n' must have been the first
+                # element of one of the s[1:] lists, right?
+                # Because the keys of jointv have been defined
+                # by the first elements of the lists in s[1:]
                 name = JOINT_SENSOR_NAMES[jointv['n']]
+
+                # I assume that 'ax' stands for accerelation.
+                # Here we transform the value that is delivered
+                # by the server into our internal value for the
+                # joint. We store the joint *accelerations* if
+                # I am not mistaken. We do not store the joint
+                # positions or its rotation for that matter.
+                #
+                # This is what I care for. This stuff I wanna
+                # store in an array, in a definitive order, in
+                # order to be able to feed it to the network.
                 if 'ax' in jointv:
                     self.joint[name] = float(jointv['ax']) * \
                         DEG_TO_RAD * \
                         (-1 if name in INV_JOINTS else 1)
+
+                # I assume that 'tp' stands for temperature
+                # Apparently, temperature needn't be converted
+                # to anything. I assume temperature is a quantity
+                # introduced to enhance realism of the simulation.
+                #
                 if 'tp' in jointv:
                     self.joint_temp[name] = float(jointv['tp'])
 
@@ -166,15 +196,15 @@ class Perception:
                 self.bat = float(s[1])
 
             # Reward
-            elif name == 'R':
+            elif name == REWARD_PERCEPTOR:
               print s
 
             # IsFallen
-            elif name == 'isfallen':
+            elif name == ISFALLEN_PERCEPTOR:
               print s
 
             # else:
-            #     raise RuntimeError('unknown perception: ' + str(s))
+            #     raise RuntimeError('unknown sensor: ' + str(s))
 
         if 'torso' in self.gps:
             data = self.gps['torso']
@@ -230,9 +260,6 @@ class Action(object):
         Function to test whether the reseteffector works.
 
         """
-        print 'counter', counter
-        # self.reset_x += 0.1
-        # self.reset_y += -1.0
         if counter % 6 < 3:
           x, y, rot = (0.0, 0.0, 0.0)
         else:

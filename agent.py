@@ -19,6 +19,8 @@ class BaseAgent(object):
         self.sync_mode = sync_mode
         self.simspark_ip = simspark_ip
         self.simspark_port = simspark_port
+        self.player_id = player_id
+        self.teamname = teamname
 
         # Connect to environment
         self.connect(self.simspark_ip,
@@ -45,7 +47,7 @@ class BaseAgent(object):
         self.act('(scene rsg/agent/naov4/nao.rsg)')
         self.sense()  # only need to get msg from simspark
         init_cmd = ('(init (unum ' + str(self.player_id) \
-                   + ')(teamname ' + teamname + '))')
+                   + ')(teamname ' + self.teamname + '))')
         self.act(init_cmd)
         self.thread = None
 
@@ -58,8 +60,7 @@ class BaseAgent(object):
         # stackoverflow.com/questions/409783/socket-shutdown-vs-socket-close
         self.socket.shutdown(socket.SHUT_RDWR)
         self.socket.close()
-        self.connect(self.simspark_ip,
-                     self.simspark_port)
+        self.connect(self.simspark_ip, self.simspark_port)
 
     def sense(self):
         """
@@ -87,7 +88,7 @@ class BaseAgent(object):
 
         """
         action = Action(perception)
-        commands = action.create_command(self.counter)
+        commands = action.create_reset_cmd(self.counter)
         return commands
 
 
@@ -100,7 +101,7 @@ class BaseAgent(object):
             len(commands)) + commands)
 
 
-    def run(self):
+    def live(self):
         """
         This is the default code for testing the BaseAgent.
         When using DDPGAgent, I will
@@ -124,4 +125,4 @@ class BaseAgent(object):
 
 if '__main__' == __name__:
     agent = BaseAgent()
-    agent.run()
+    agent.live()
